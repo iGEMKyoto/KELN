@@ -39,8 +39,8 @@ public class KELN extends JPanel implements ActionListener, ItemListener, KeyLis
 			"PCR (Target)",
 			"PCR (Steps)",
 			"Transformation",
-			"Colony PCR (1Column)",
-			"Colony PCR (2Column)",
+			"Colony PCR (typeA)",
+			"Colony PCR (typeB)",
 			"Liquid Culture",
 			"Miniprep",
 			"Restriction Enzyme Digestion",
@@ -73,7 +73,11 @@ public class KELN extends JPanel implements ActionListener, ItemListener, KeyLis
 			"Medium"
 	};
 	String[] list_ColonyPCR_1 = {
-			"Name I"
+			"Templates/(μl)",
+			"Primers/(μl)",
+			"MilliQ/(μl)",
+			"PreMix/(μl)",
+			"Total/(μl)"
 	};
 	String[] list_ColonyPCR_2 = {
 			"Name I",
@@ -399,10 +403,10 @@ public class KELN extends JPanel implements ActionListener, ItemListener, KeyLis
 			case "Transformation":
 				list_Current = list_Transformation;
 				break;
-			case "Colony PCR (1Column)":
+			case "Colony PCR (typeA)":
 				list_Current = list_ColonyPCR_1;
 				break;
-			case "Colony PCR (2Column)":
+			case "Colony PCR (typeB)":
 				list_Current = list_ColonyPCR_2;
 				break;
 			case "Liquid Culture":
