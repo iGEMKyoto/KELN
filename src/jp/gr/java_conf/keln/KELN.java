@@ -144,8 +144,8 @@ public class KELN extends JPanel implements ActionListener, ItemListener, KeyLis
 	JCheckBox isAllowedOutput;
 	JComboBox<String> selector, author;
 	JPanel panel_North, panel_Checkbox, panel_Date;
-	JTextField text_Month, text_Date;
-	JLabel label_Month, label_Date, label_Author;
+	JTextField text_Month, text_Date, text_No;
+	JLabel label_Month, label_Date, label_No, label_Author;
 	
 	DefaultTableModel tablemodel;
 	DefaultTableColumnModel colmodel;
@@ -172,10 +172,13 @@ public class KELN extends JPanel implements ActionListener, ItemListener, KeyLis
 		isAllowedOutput = new JCheckBox("Write data to text", true);
 		text_Month = new JTextField();
 		text_Date = new JTextField();
+		text_No = new JTextField();
 		text_Month.setPreferredSize(new Dimension(50, 25));
 		text_Date.setPreferredSize(new Dimension(50, 25));
+		text_No.setPreferredSize(new Dimension(30, 25));
 		label_Month = new JLabel("Month");
 		label_Date = new JLabel("Day");
+		label_No = new JLabel("No.");
 		label_Author = new JLabel("Author");
 		//Layout
 		panel_Date = new JPanel();
@@ -192,6 +195,8 @@ public class KELN extends JPanel implements ActionListener, ItemListener, KeyLis
 		panel_Date.add(text_Month);
 		panel_Date.add(label_Date);
 		panel_Date.add(text_Date);
+		panel_Date.add(label_No);
+		panel_Date.add(text_No);
 		panel_Date.add(label_Author);
 		panel_Date.add(author);
 		panel_Date.add(destroy);
@@ -245,13 +250,8 @@ public class KELN extends JPanel implements ActionListener, ItemListener, KeyLis
 		out += " -->\r\n<div class=\"keln_container\">\r\n";
 		//Date
 		out += "<a name=\"";
-		try{
-			if(Integer.parseInt(text_Month.getText().toString()) <= 9){
-				out += "0";
-			}
-		}catch(NumberFormatException e){
-			JOptionPane.showMessageDialog(this, "Date is invalid or empty.");
-			return;
+		if(Integer.parseInt(text_Month.getText().toString()) <= 9){
+			out += "0";
 		}
 		out += text_Month.getText().toString();
 		try{
@@ -339,7 +339,7 @@ public class KELN extends JPanel implements ActionListener, ItemListener, KeyLis
 	public void saveStringToText(String output){
 		Date time = new Date();
 		SimpleDateFormat ftime = new SimpleDateFormat("MM_dd_hh_mm_ss");
-		String filename = text_Month.getText() + "_" + text_Date.getText() +  "_" + selector.getSelectedItem().toString() + "_" + author.getSelectedItem().toString() + "_" + ftime.format(time) + ".txt";
+		String filename = text_Month.getText() + "_" + text_Date.getText() +  "_" + "No" + text_No.getText() + "_" + selector.getSelectedItem().toString() + "_" + author.getSelectedItem().toString() + "_" + ftime.format(time) + ".txt";
 		String parentdir = System.getProperty("user.dir");
 		String fullpath = "";
 		if(platform.equals("linux") || platform.equals("mac")){
@@ -378,6 +378,21 @@ public class KELN extends JPanel implements ActionListener, ItemListener, KeyLis
 		return result;
 	}
 	
+	public Boolean validateInputForm(){
+		Boolean result = true;
+		try{
+			Integer.parseInt(text_Month.getText().toString());
+		}catch(NumberFormatException e){
+			JOptionPane.showMessageDialog(this, "Date is invalid or empty.");
+			result = false;
+		}
+		if(text_No.getText().equals("")){
+			JOptionPane.showMessageDialog(this, "No. is empty.");
+			result = false;
+		}
+		return result;
+	}
+	
 	public static void main(String[] args){
 		KELN keln = new KELN();
 		JFrame frame = new JFrame("KELN");
@@ -391,7 +406,9 @@ public class KELN extends JPanel implements ActionListener, ItemListener, KeyLis
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == generate){
-			convertStringToHTML();
+			if(validateInputForm()){
+				convertStringToHTML();
+			}
 		}
 		if(e.getSource() == destroy){
 			resetTable();
