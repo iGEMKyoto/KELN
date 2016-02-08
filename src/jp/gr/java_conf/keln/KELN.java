@@ -32,7 +32,8 @@ public class KELN extends JPanel implements ActionListener, ItemListener, KeyLis
 			"Yoshida",
 			"Kim",
 			"Nakamura",
-			"Yamada"
+			"Yamada",
+			"Watanabe"
 	};
 	
 	String[] list_Experiment = {	//Write experiments here
@@ -47,7 +48,7 @@ public class KELN extends JPanel implements ActionListener, ItemListener, KeyLis
 			"Electrophoresis",
 			"Gel Extraction",
 			"Preparation",
-			"PartAwaking"
+			"PartsAwaking"
 	};
 	
 	//Write elements of each experiment
@@ -454,7 +455,7 @@ public class KELN extends JPanel implements ActionListener, ItemListener, KeyLis
 			case "Preparation":
 				list_Current = list_Preparation;
 				break;
-			case "PartAwaking":
+			case "PartsAwaking":
 				list_Current = list_PartsAwaking;
 				break;
 			default:
