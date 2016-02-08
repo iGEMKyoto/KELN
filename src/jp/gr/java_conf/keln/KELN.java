@@ -46,7 +46,8 @@ public class KELN extends JPanel implements ActionListener, ItemListener, KeyLis
 			"Restriction Enzyme Digestion",
 			"Electrophoresis",
 			"Gel Extraction",
-			"Preparation"
+			"Preparation",
+			"PartAwaking"
 	};
 	
 	//Write elements of each experiment
@@ -117,6 +118,15 @@ public class KELN extends JPanel implements ActionListener, ItemListener, KeyLis
 	String[] list_Preparation = {
 			"Reagent",
 			"Liquid"
+	};
+	String[] list_PartsAwaking = {
+			"Description",
+			"PartName",
+			"Backbone",
+			"Well",
+			"PlateYear",
+			"PlateNumber",
+			"MilliQ(μl)"
 	};
 
 	//variables
@@ -426,6 +436,10 @@ public class KELN extends JPanel implements ActionListener, ItemListener, KeyLis
 				break;
 			case "Preparation":
 				list_Current = list_Preparation;
+				break;
+			case "PartAwaking":
+				list_Current = list_PartsAwaking;
+				break;
 			default:
 				break;
 			}
