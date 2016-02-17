@@ -39,6 +39,7 @@ public class KELN extends JPanel implements ActionListener, ItemListener, KeyLis
 	String[] list_Experiment = {	//Write experiments here
 			"PCR (Target)",
 			"PCR (Steps)",
+			"PCR (Purification)",
 			"Transformation",
 			"Colony PCR (typeA)",
 			"Colony PCR (typeB)",
@@ -67,6 +68,12 @@ public class KELN extends JPanel implements ActionListener, ItemListener, KeyLis
 			"Temparature",
 			"Time",
 			"Cycle"
+	};
+	String[] list_PCR_Purification = {
+			"Sample Name/(μl)",
+			"Concentration(ng/μl)",
+			"260/280", 
+			"260/230"
 	};
 	String[] list_Transformation = {
 			"Sample Name",
@@ -427,6 +434,9 @@ public class KELN extends JPanel implements ActionListener, ItemListener, KeyLis
 				break;
 			case "PCR (Steps)":
 				list_Current = list_PCR_Steps;
+				break;
+			case "PCR (Purification)":
+				list_Current = list_PCR_Purification;
 				break;
 			case "Transformation":
 				list_Current = list_Transformation;
