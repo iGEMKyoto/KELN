@@ -116,7 +116,8 @@ public class KELN extends JPanel implements ActionListener, ItemListener, KeyLis
 	};
 	String[] list_Electrophoresis = {
 			"Lane",
-			"Restriction Enzyme Digestion Products"
+			"sample/(μl)",
+			"Length(bp)"
 	};
 	String[] list_GelExtraction = {
 			"Lane",
