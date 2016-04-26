@@ -46,7 +46,8 @@ public class KELN extends JPanel implements ActionListener, ItemListener, KeyLis
 			"Restriction Enzyme Digestion",
 			"Electrophoresis",
 			"Gel Extraction",
-			"Preparation"
+			"Preparation",
+			"General"
 	};
 	
 	//Write elements of each experiment
@@ -118,6 +119,9 @@ public class KELN extends JPanel implements ActionListener, ItemListener, KeyLis
 			"Reagent",
 			"Liquid"
 	};
+	String[] list_General={
+			
+	};
 
 	//variables
 	int Col_Max; //Maximum number of the column will be initialized in constructor.
@@ -133,9 +137,15 @@ public class KELN extends JPanel implements ActionListener, ItemListener, KeyLis
 	JCheckBox[] researcher;
 	JCheckBox isAllowedOutput;
 	JComboBox<String> selector, author;
-	JPanel panel_North, panel_Checkbox, panel_Date;
+	JPanel panel_North, panel_Checkbox, panel_Date, panel_Text;
 	JTextField text_Month, text_Date;
 	JLabel label_Month, label_Date, label_Author;
+	JLabel label_Colmn, label_Title;
+	JTextField text_Column, text_Title;
+	JButton button_Apply;
+	JTextArea text_Memo;
+	JScrollPane scroll_Memo;
+	JLabel label_Output, label_Memo;
 	
 	DefaultTableModel tablemodel;
 	DefaultTableColumnModel colmodel;
@@ -145,7 +155,7 @@ public class KELN extends JPanel implements ActionListener, ItemListener, KeyLis
 		list_Current = list_PCR_Target;
 		Col_Max = list_Current.length;
 		createTable();
-		output = new JTextArea();
+		output = new JTextArea("This is output area.\nYou can add note in right text field.");
 		output.setRows(10);
 		scroll_o = new JScrollPane(output);
 		generate = new JButton("Convert");
@@ -159,14 +169,27 @@ public class KELN extends JPanel implements ActionListener, ItemListener, KeyLis
 		for(int i = 0; i<list_Researcher.length; i++){
 			researcher[i] = new JCheckBox(list_Researcher[i]);
 		}
-		isAllowedOutput = new JCheckBox("Write data to text", true);
+		isAllowedOutput = new JCheckBox("Save", true);
 		text_Month = new JTextField();
 		text_Date = new JTextField();
 		text_Month.setPreferredSize(new Dimension(50, 25));
 		text_Date.setPreferredSize(new Dimension(50, 25));
+		text_Column = new JTextField();
+		text_Title = new JTextField();
+		text_Column.setPreferredSize(new Dimension(30, 25));
+		text_Title.setPreferredSize(new Dimension(100, 25));
 		label_Month = new JLabel("Month");
 		label_Date = new JLabel("Day");
 		label_Author = new JLabel("Author");
+		label_Colmn = new JLabel("Cols");
+		label_Title = new JLabel("Title");
+		button_Apply = new JButton("apply");
+		button_Apply.addActionListener(this);
+		text_Memo = new JTextArea();
+		text_Memo.setRows(10);
+		scroll_Memo = new JScrollPane(text_Memo);
+		scroll_Memo.setPreferredSize(new Dimension(100, 50));
+		
 		//Layout
 		panel_Date = new JPanel();
 		panel_North = new JPanel();
@@ -177,6 +200,8 @@ public class KELN extends JPanel implements ActionListener, ItemListener, KeyLis
 		for(int i = 0; i<list_Researcher.length; i++){
 			panel_Checkbox.add(researcher[i]);
 		}
+		panel_Text = new JPanel();
+		panel_Text.setLayout(new GridLayout(1, 2));
 		setLayout(new BorderLayout());
 		panel_Date.add(label_Month);
 		panel_Date.add(text_Month);
@@ -186,30 +211,63 @@ public class KELN extends JPanel implements ActionListener, ItemListener, KeyLis
 		panel_Date.add(author);
 		panel_Date.add(destroy);
 		panel_Date.add(isAllowedOutput);
+		panel_Date.add(label_Colmn);
+		panel_Date.add(text_Column);
+		panel_Date.add(label_Title);
+		panel_Date.add(text_Title);
+		panel_Date.add(button_Apply);
 		panel_North.add(panel_Date, BorderLayout.NORTH);
 		panel_North.add(panel_Checkbox, BorderLayout.CENTER);
 		panel_North.add(scroll_t, BorderLayout.SOUTH);
+		panel_Text.add(scroll_o);
+		panel_Text.add(scroll_Memo);
 		add(panel_North, BorderLayout.NORTH);
 		add(generate, BorderLayout.CENTER);
-		add(scroll_o, BorderLayout.SOUTH);
+		add(panel_Text, BorderLayout.SOUTH);
 		add(selector, BorderLayout.WEST);
 	}
 	
 	public void createTable(){
-		Col_Max = list_Current.length;
-		tablemodel = new DefaultTableModel(list_Current, ROW_MAX);
-		table = new JTable(tablemodel);
+		if(list_Current == list_General){
+			int columnNumber;
+			try{
+				columnNumber = Integer.parseInt(text_Column.getText());
+			}catch(NumberFormatException e){
+				columnNumber = 1;
+			}
+			
+			table = new JTable(ROW_MAX, columnNumber);
+		} else {
+			tablemodel = new DefaultTableModel(list_Current, ROW_MAX);
+			table = new JTable(tablemodel);
+		}
+		if(list_Current == list_General){
+			try{
+				Col_Max = Integer.parseInt(text_Column.getText());
+			}catch(NumberFormatException e){
+				Col_Max = 1;
+			}
+			
+		} else {
+			Col_Max = list_Current.length;
+		}
 		table.addKeyListener(this);
 		table.setColumnSelectionAllowed(true); //User is allowed to select a single cell
 		table.setGridColor(Color.decode("#4682B4"));
+		
 		colmodel = (DefaultTableColumnModel)table.getColumnModel();
 		scroll_t = new JScrollPane(table);
 		scroll_t.setPreferredSize(table.getPreferredSize());
-		TableColumn col;
-		for(int i=0; i< Col_Max; i++){
-			col = colmodel.getColumn(i);
-			col.setHeaderValue(list_Current[i]);
+		if(list_Current != list_General){
+			TableColumn col;
+			for(int i=0; i< Col_Max; i++){
+				col = colmodel.getColumn(i);
+				col.setHeaderValue(list_Current[i]);
+			}
+		} else {
+			tablemodel = (DefaultTableModel) table.getModel();
 		}
+		
 	}
 	
 	public void resetTable(){
@@ -260,7 +318,18 @@ public class KELN extends JPanel implements ActionListener, ItemListener, KeyLis
 		
 		//Experiment name
 		out += "<span class=\"keln_exp\"><h4>";
-		out += selector.getSelectedItem().toString();
+		if(list_Current == list_General){
+			if(text_Title.getText().equals("")){
+				JOptionPane.showMessageDialog(this, "Please set a title for this table.");
+				return;
+			}else{
+				out += text_Title.getText();
+			}
+			
+		} else {
+			out += selector.getSelectedItem().toString();
+		}
+		
 		out += "</h4></span>\r\n";
 		
 		//Experimenter name
@@ -289,14 +358,22 @@ public class KELN extends JPanel implements ActionListener, ItemListener, KeyLis
 		//Add header
 		for(int i=0; i<Col_Max; i++){
 			out += "<th>";
-			col = colmodel.getColumn(i);
-			out += col.getHeaderValue();
+			if(list_Current == list_General){
+				out += tablemodel.getValueAt(0, i);
+			} else {
+				col = colmodel.getColumn(i);
+				out += col.getHeaderValue();
+			} 
+			
 			out += "</th>";
 		}
 		out += "</tr>\r\n";
 		
 		//Fill the table with data
 		for(int i=0; i<ROW_MAX; i++){
+			if((list_Current == list_General) && i == 0){
+				continue;
+			}
 			//Stop after detecting an empty row
 			int emptyCount = 0;
 			for(int j=0; j<table.getColumnCount(); j++){
@@ -318,6 +395,11 @@ public class KELN extends JPanel implements ActionListener, ItemListener, KeyLis
 		}
 		
 		out += "</table>\r\n</div>\r\n";
+		if(!text_Memo.getText().equals("")){
+			String memo = text_Memo.getText();
+			memo = replaceString(memo, "\n", "<br>");
+			out += "<p class=\"keln_note\">" + memo + "</p>" + "\n";
+		}
 		out += "<!------------ Table END ------------>";
 		out = replaceString(out, "μ", "&micro");
 		output.setText(out);
@@ -388,6 +470,11 @@ public class KELN extends JPanel implements ActionListener, ItemListener, KeyLis
 			resetCheckbox();
 			output.setText("");
 		}
+		if(e.getSource() == button_Apply){
+			selector.setSelectedItem("General");
+			list_Current = list_General;
+			resetTable();
+		}
 	}
 
 	@Override
@@ -426,6 +513,9 @@ public class KELN extends JPanel implements ActionListener, ItemListener, KeyLis
 				break;
 			case "Preparation":
 				list_Current = list_Preparation;
+				break;
+			case "General":
+				list_Current = list_General;
 			default:
 				break;
 			}
