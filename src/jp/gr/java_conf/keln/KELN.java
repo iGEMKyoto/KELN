@@ -78,7 +78,7 @@ public class KELN extends JPanel implements ActionListener, ItemListener, KeyLis
 	};
 	String[] list_Transformation = {
 			"Sample Name",
-			"Sample Volume",
+			"Sample Volume (μl)",
 			"Competent Cells/(μl)",
 			"Medium"
 	};
