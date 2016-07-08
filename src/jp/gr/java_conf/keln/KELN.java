@@ -12,134 +12,9 @@ import javax.swing.table.*;
 public class KELN extends JPanel implements ActionListener, ItemListener, KeyListener{
 	/*
 	 * To modify this program for your team,
-	 * you have to replace each value of variables.
+	 * you have to replace each value of variables in StringResources.java.
 	 * 
 	 */
-	
-	String[] list_Researcher = {	//Write team members here
-			"Sukegawa",
-			"Matsumoto",
-			"Li",
-			"Tsujii",
-			"Uchino",
-			"Iguchi",
-			"Michimori",
-			"Notsu",
-			"Kaneko",
-			"Egashira",
-			"Wan",
-			"Yamamoto",
-			"Yoshida",
-			"Kim",
-			"Nakamura",
-			"Yamada",
-			"Watanabe"
-	};
-	
-	String[] list_Experiment = {	//Write experiments here
-			"PCR (Target)",
-			"PCR (Steps)",
-			"PCR (Purification)",
-			"Transformation",
-			"Colony PCR (typeA)",
-			"Colony PCR (typeB)",
-			"Liquid Culture",
-			"Miniprep",
-			"Restriction Enzyme Digestion",
-			"Electrophoresis",
-			"Gel Extraction",
-			"Preparation",
-			"PartsAwaking",
-			"General"
-	};
-	
-	//Write elements of each experiment
-	//Note:you have to edit itemStateChanged() function after adding experiment.
-	String[] list_PCR_Target = {
-			"Templates/(μl)",
-			"Primer1/(μl)",
-			"Primer2/(μl)",
-			"Buffer/(μl)",
-			"MilliQ/(μl)",
-			"Any Other/(μl)",
-			"Total/(μl)"
-	};
-	String[] list_PCR_Steps = {
-			"Steps",
-			"Temparature",
-			"Time",
-			"Cycle"
-	};
-	String[] list_PCR_Purification = {
-			"Sample Name/(μl)",
-			"Concentration(ng/μl)",
-			"260/280", 
-			"260/230"
-	};
-	String[] list_Transformation = {
-			"Sample Name",
-			"Sample Volume (μl)",
-			"Competent Cells/(μl)",
-			"Medium"
-	};
-	String[] list_ColonyPCR_1 = {
-			"Templates/(μl)",
-			"Primers/(μl)",
-			"MilliQ/(μl)",
-			"PreMix/(μl)",
-			"Total/(μl)"
-	};
-	String[] list_ColonyPCR_2 = {
-			"Name I",
-			"Name II"
-	};
-	String[] list_LiquidCulture = {
-			"Name",
-			"medium"
-	};
-	String[] list_Miniprep = {
-			"DNA",
-			"Concentration/(μg/ml)",
-			"260/280", 
-			"260/230"
-	};
-	String[] list_RestrictionEnzymeDigestion = {
-			"Sample",
-			"DNA/(μl)",
-			"EcoR1/(μl)",
-			"Xba1/(μl)",
-			"Spe1/(μl)",
-			"Pst1/(μl)",
-			"Buffer/(μl)",
-			"BSA/(μl)",
-			"MilliQ/(μl)",
-			"Total/(μl)"
-	};
-	String[] list_Electrophoresis = {
-			"Lane",
-			"sample/(μl)",
-			"Length(bp)"
-	};
-	String[] list_GelExtraction = {
-			"Lane",
-			"Restriction Enzyme Digestion Product",
-			"Volume/(μl)"
-	};
-	String[] list_Preparation = {
-			"Reagent",
-			"Liquid"
-	};
-	String[] list_PartsAwaking = {
-			"Description",
-			"PartName",
-			"Backbone",
-			"Well",
-			"PlateYear",
-			"PlateNumber",
-			"MilliQ(μl)"
-	};
-	String[] list_General={
-	};
 
 	//variables
 	int Col_Max; //Maximum number of the column will be initialized in constructor.
@@ -170,7 +45,7 @@ public class KELN extends JPanel implements ActionListener, ItemListener, KeyLis
 	
 	public KELN(){ //Constructor
 		platform = getPlatformName();
-		list_Current = list_PCR_Target;
+		list_Current = StringResources.list_PCR_Target;
 		Col_Max = list_Current.length;
 		createTable();
 		output = new JTextArea("This is output area.\nYou can add note in right text field.");
@@ -180,12 +55,12 @@ public class KELN extends JPanel implements ActionListener, ItemListener, KeyLis
 		generate.addActionListener(this);
 		destroy = new JButton("Clear");
 		destroy.addActionListener(this);
-		selector = new JComboBox<String>(list_Experiment);
+		selector = new JComboBox<String>(StringResources.list_Experiment);
 		selector.addItemListener(this);
-		author = new JComboBox<String>(list_Researcher);
-		researcher = new JCheckBox[list_Researcher.length];
-		for(int i = 0; i<list_Researcher.length; i++){
-			researcher[i] = new JCheckBox(list_Researcher[i]);
+		author = new JComboBox<String>(StringResources.list_Researcher);
+		researcher = new JCheckBox[StringResources.list_Researcher.length];
+		for(int i = 0; i<StringResources.list_Researcher.length; i++){
+			researcher[i] = new JCheckBox(StringResources.list_Researcher[i]);
 		}
 		isAllowedOutput = new JCheckBox("Save", true);
 		text_Month = new JTextField();
@@ -217,8 +92,8 @@ public class KELN extends JPanel implements ActionListener, ItemListener, KeyLis
 		panel_Checkbox = new JPanel();
 		panel_Date.setLayout(new FlowLayout(FlowLayout.LEFT));
 		panel_North.setLayout(new BorderLayout());
-		panel_Checkbox.setLayout(new GridLayout((int)list_Researcher.length / 7 + 1 , 7));
-		for(int i = 0; i<list_Researcher.length; i++){
+		panel_Checkbox.setLayout(new GridLayout((int)StringResources.list_Researcher.length / 7 + 1 , 7));
+		for(int i = 0; i<StringResources.list_Researcher.length; i++){
 			panel_Checkbox.add(researcher[i]);
 		}
 		panel_Text = new JPanel();
@@ -251,7 +126,7 @@ public class KELN extends JPanel implements ActionListener, ItemListener, KeyLis
 	}
 	
 	public void createTable(){
-		if(list_Current == list_General){
+		if(list_Current == StringResources.list_General){
 			int columnNumber;
 			try{
 				columnNumber = Integer.parseInt(text_Column.getText());
@@ -264,7 +139,7 @@ public class KELN extends JPanel implements ActionListener, ItemListener, KeyLis
 			tablemodel = new DefaultTableModel(list_Current, ROW_MAX);
 			table = new JTable(tablemodel);
 		}
-		if(list_Current == list_General){
+		if(list_Current == StringResources.list_General){
 			try{
 				Col_Max = Integer.parseInt(text_Column.getText());
 			}catch(NumberFormatException e){
@@ -281,7 +156,7 @@ public class KELN extends JPanel implements ActionListener, ItemListener, KeyLis
 		colmodel = (DefaultTableColumnModel)table.getColumnModel();
 		scroll_t = new JScrollPane(table);
 		scroll_t.setPreferredSize(table.getPreferredSize());
-		if(list_Current != list_General){
+		if(list_Current != StringResources.list_General){
 			TableColumn col;
 			for(int i=0; i< Col_Max; i++){
 				col = colmodel.getColumn(i);
@@ -301,7 +176,7 @@ public class KELN extends JPanel implements ActionListener, ItemListener, KeyLis
 	}
 	
 	public void resetCheckbox(){
-		for(int i=0; i<list_Researcher.length; i++){
+		for(int i=0; i<StringResources.list_Researcher.length; i++){
 			researcher[i].setSelected(false);
 		}
 	}
@@ -336,7 +211,7 @@ public class KELN extends JPanel implements ActionListener, ItemListener, KeyLis
 		
 		//Experiment name
 		out += "<span class=\"keln_exp\"><h4>";
-		if(list_Current == list_General){
+		if(list_Current == StringResources.list_General){
 			if(text_Title.getText().equals("")){
 				JOptionPane.showMessageDialog(this, "Please set a title for this table.");
 				return;
@@ -354,12 +229,12 @@ public class KELN extends JPanel implements ActionListener, ItemListener, KeyLis
 		out += "<span class=\"keln_researcher\">";
 		
 		int finalindex = 0; //final experimenter
-		for(int i=0; i<list_Researcher.length; i++){
+		for(int i=0; i<StringResources.list_Researcher.length; i++){
 			if(researcher[i].isSelected() == true){
 				finalindex = i;
 			}
 		}
-		for(int i=0; i<list_Researcher.length; i++){
+		for(int i=0; i<StringResources.list_Researcher.length; i++){
 			if(researcher[i].isSelected() == true){
 				out += researcher[i].getText();
 				if(i != finalindex){
@@ -376,7 +251,7 @@ public class KELN extends JPanel implements ActionListener, ItemListener, KeyLis
 		//Add header
 		for(int i=0; i<Col_Max; i++){
 			out += "<th>";
-			if(list_Current == list_General){
+			if(list_Current == StringResources.list_General){
 				out += tablemodel.getValueAt(0, i);
 			} else {
 				col = colmodel.getColumn(i);
@@ -389,7 +264,7 @@ public class KELN extends JPanel implements ActionListener, ItemListener, KeyLis
 		
 		//Fill the table with data
 		for(int i=0; i<ROW_MAX; i++){
-			if((list_Current == list_General) && i == 0){
+			if((list_Current == StringResources.list_General) && i == 0){
 				continue;
 			}
 			//Stop after detecting an empty row
@@ -507,7 +382,7 @@ public class KELN extends JPanel implements ActionListener, ItemListener, KeyLis
 		}
 		if(e.getSource() == button_Apply){
 			selector.setSelectedItem("General");
-			list_Current = list_General;
+			list_Current = StringResources.list_General;
 			resetTable();
 		}
 	}
@@ -517,46 +392,46 @@ public class KELN extends JPanel implements ActionListener, ItemListener, KeyLis
 		if(e.getSource() == selector && e.getStateChange() == ItemEvent.SELECTED){
 			switch (selector.getSelectedItem().toString()) {
 			case "PCR (Target)":
-				list_Current = list_PCR_Target;
+				list_Current = StringResources.list_PCR_Target;
 				break;
 			case "PCR (Steps)":
-				list_Current = list_PCR_Steps;
+				list_Current = StringResources.list_PCR_Steps;
 				break;
 			case "PCR (Purification)":
-				list_Current = list_PCR_Purification;
+				list_Current = StringResources.list_PCR_Purification;
 				break;
 			case "Transformation":
-				list_Current = list_Transformation;
+				list_Current = StringResources.list_Transformation;
 				break;
 			case "Colony PCR (typeA)":
-				list_Current = list_ColonyPCR_1;
+				list_Current = StringResources.list_ColonyPCR_1;
 				break;
 			case "Colony PCR (typeB)":
-				list_Current = list_ColonyPCR_2;
+				list_Current = StringResources.list_ColonyPCR_2;
 				break;
 			case "Liquid Culture":
-				list_Current = list_LiquidCulture;
+				list_Current = StringResources.list_LiquidCulture;
 				break;
 			case "Miniprep":
-				list_Current = list_Miniprep;
+				list_Current = StringResources.list_Miniprep;
 				break;
 			case "Restriction Enzyme Digestion":
-				list_Current = list_RestrictionEnzymeDigestion;
+				list_Current = StringResources.list_RestrictionEnzymeDigestion;
 				break;
 			case "Electrophoresis":
-				list_Current = list_Electrophoresis;
+				list_Current = StringResources.list_Electrophoresis;
 				break;
 			case "Gel Extraction":
-				list_Current = list_GelExtraction;
+				list_Current = StringResources.list_GelExtraction;
 				break;
 			case "Preparation":
-				list_Current = list_Preparation;
+				list_Current = StringResources.list_Preparation;
 				break;
 			case "PartsAwaking":
-				list_Current = list_PartsAwaking;
+				list_Current = StringResources.list_PartsAwaking;
 				break;
 			case "General":
-				list_Current = list_General;
+				list_Current = StringResources.list_General;
 			default:
 				break;
 			}
