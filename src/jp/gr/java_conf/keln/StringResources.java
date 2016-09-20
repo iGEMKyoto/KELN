@@ -1,25 +1,6 @@
 package jp.gr.java_conf.keln;
 
 public class StringResources {
-	public static final String[] list_Researcher = {	//Write team members here
-			"Sukegawa",
-			"Matsumoto",
-			"Li",
-			"Tsujii",
-			"Uchino",
-			"Iguchi",
-			"Michimori",
-			"Notsu",
-			"Kaneko",
-			"Egashira",
-			"Wan",
-			"Yamamoto",
-			"Yoshida",
-			"Kim",
-			"Nakamura",
-			"Yamada",
-			"Watanabe"
-	};
 	
 	public static final String[] list_Experiment = {	//Write experiments here
 			"PCR (Target)",

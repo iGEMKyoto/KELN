@@ -1,5 +1,6 @@
 package jp.gr.java_conf.keln;
 import java.awt.*;
+import java.awt.List;
 import java.awt.event.*;
 import java.io.*;
 import java.text.*;
@@ -8,6 +9,10 @@ import java.util.regex.*;
 
 import javax.swing.*;
 import javax.swing.table.*;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class KELN extends JPanel implements ActionListener, ItemListener, KeyListener{
 	/*
@@ -21,6 +26,7 @@ public class KELN extends JPanel implements ActionListener, ItemListener, KeyLis
 	final int ROW_MAX = 20; //Maximum number of the row
 	String platform; //OS version
 	String[] list_Current; //This array stores list_[experiment name]
+	ArrayList<String> list_Researcher = new ArrayList<String>();
 	
 	//GUI
 	JTable table;
@@ -44,6 +50,7 @@ public class KELN extends JPanel implements ActionListener, ItemListener, KeyLis
 	DefaultTableColumnModel colmodel;
 	
 	public KELN(){ //Constructor
+		readJson();
 		platform = getPlatformName();
 		list_Current = StringResources.list_PCR_Target;
 		Col_Max = list_Current.length;
@@ -57,10 +64,10 @@ public class KELN extends JPanel implements ActionListener, ItemListener, KeyLis
 		destroy.addActionListener(this);
 		selector = new JComboBox<String>(StringResources.list_Experiment);
 		selector.addItemListener(this);
-		author = new JComboBox<String>(StringResources.list_Researcher);
-		researcher = new JCheckBox[StringResources.list_Researcher.length];
-		for(int i = 0; i<StringResources.list_Researcher.length; i++){
-			researcher[i] = new JCheckBox(StringResources.list_Researcher[i]);
+		author = new JComboBox<String>(list_Researcher.toArray(new String[0]));
+		researcher = new JCheckBox[list_Researcher.size()];
+		for(int i = 0; i<list_Researcher.size(); i++){
+			researcher[i] = new JCheckBox(list_Researcher.get(i));
 		}
 		isAllowedOutput = new JCheckBox("Save", true);
 		text_Month = new JTextField();
@@ -92,8 +99,8 @@ public class KELN extends JPanel implements ActionListener, ItemListener, KeyLis
 		panel_Checkbox = new JPanel();
 		panel_Date.setLayout(new FlowLayout(FlowLayout.LEFT));
 		panel_North.setLayout(new BorderLayout());
-		panel_Checkbox.setLayout(new GridLayout((int)StringResources.list_Researcher.length / 7 + 1 , 7));
-		for(int i = 0; i<StringResources.list_Researcher.length; i++){
+		panel_Checkbox.setLayout(new GridLayout((int)list_Researcher.size() / 7 + 1 , 7));
+		for(int i = 0; i<list_Researcher.size(); i++){
 			panel_Checkbox.add(researcher[i]);
 		}
 		panel_Text = new JPanel();
@@ -176,7 +183,7 @@ public class KELN extends JPanel implements ActionListener, ItemListener, KeyLis
 	}
 	
 	public void resetCheckbox(){
-		for(int i=0; i<StringResources.list_Researcher.length; i++){
+		for(int i=0; i<list_Researcher.size(); i++){
 			researcher[i].setSelected(false);
 		}
 	}
@@ -229,12 +236,12 @@ public class KELN extends JPanel implements ActionListener, ItemListener, KeyLis
 		out += "<span class=\"keln_researcher\">";
 		
 		int finalindex = 0; //final experimenter
-		for(int i=0; i<StringResources.list_Researcher.length; i++){
+		for(int i=0; i<list_Researcher.size(); i++){
 			if(researcher[i].isSelected() == true){
 				finalindex = i;
 			}
 		}
-		for(int i=0; i<StringResources.list_Researcher.length; i++){
+		for(int i=0; i<list_Researcher.size(); i++){
 			if(researcher[i].isSelected() == true){
 				out += researcher[i].getText();
 				if(i != finalindex){
@@ -356,6 +363,25 @@ public class KELN extends JPanel implements ActionListener, ItemListener, KeyLis
 			result = false;
 		}
 		return result;
+	}
+	
+	public void readJson(){
+		ObjectMapper mapper = new ObjectMapper();
+		JsonNode root = null;
+		try {
+			root = mapper.readTree(new File("settings.txt"));
+		} catch (JsonProcessingException e) {
+			JOptionPane.showMessageDialog(this, "Syntax Error");
+			System.exit(0);
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(this, "Please create settings.txt in the same directory as KELN.jar");
+			System.exit(0);
+		}
+		for(JsonNode n: root.get("member")){
+			list_Researcher.add(n.asText());
+		}
+		
+		
 	}
 	
 	public static void main(String[] args){
