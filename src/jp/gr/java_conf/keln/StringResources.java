@@ -12,8 +12,10 @@ public class StringResources {
 			"Liquid Culture",
 			"Miniprep",
 			"Restriction Enzyme Digestion",
+			"Ligation",
 			"Electrophoresis",
 			"Gel Extraction",
+			"Gel Extraction(Measurement)",
 			"Preparation",
 			"PartsAwaking",
 			"General"
@@ -81,6 +83,12 @@ public class StringResources {
 			"MilliQ/(É l)",
 			"Total/(É l)"
 	};
+	public static final String[] list_Ligation = {
+			"Vector/(É l)",
+			"Insert/(É l)",
+			"Ligation High/(É l)",
+			"Total/(É l)"
+	};
 	public static final String[] list_Electrophoresis = {
 			"Lane",
 			"sample/(É l)",
@@ -90,6 +98,12 @@ public class StringResources {
 			"Lane",
 			"Restriction Enzyme Digestion Product",
 			"Volume/(É l)"
+	};
+	public static final String[] list_GelExtraction_Measurement = {
+			"Sample/(É l)",
+			"Concentration(É g/É l)",
+			"260/280",
+			"260/230"
 	};
 	public static final String[] list_Preparation = {
 			"Reagent",

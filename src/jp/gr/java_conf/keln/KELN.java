@@ -444,11 +444,17 @@ public class KELN extends JPanel implements ActionListener, ItemListener, KeyLis
 			case "Restriction Enzyme Digestion":
 				list_Current = StringResources.list_RestrictionEnzymeDigestion;
 				break;
+			case "Ligation":
+				list_Current = StringResources.list_Ligation;
+				break;
 			case "Electrophoresis":
 				list_Current = StringResources.list_Electrophoresis;
 				break;
 			case "Gel Extraction":
 				list_Current = StringResources.list_GelExtraction;
+				break;
+			case "Gel Extraction(Measurement)":
+				list_Current = StringResources.list_GelExtraction_Measurement;
 				break;
 			case "Preparation":
 				list_Current = StringResources.list_Preparation;
