@@ -462,6 +462,9 @@ public class KELN extends JPanel implements ActionListener, ItemListener, KeyLis
 			case "PartsAwaking":
 				list_Current = StringResources.list_PartsAwaking;
 				break;
+			case "Sequence":
+				list_Current = StringResources.list_Sequence;
+				break;
 			case "General":
 				list_Current = StringResources.list_General;
 			default:

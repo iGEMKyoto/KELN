@@ -18,6 +18,7 @@ public class StringResources {
 			"Gel Extraction(Measurement)",
 			"Preparation",
 			"PartsAwaking",
+			"Sequence",
 			"General"
 	};
 	
@@ -117,6 +118,13 @@ public class StringResources {
 			"PlateYear",
 			"PlateNumber",
 			"MilliQ(É l)"
+	};
+	public static final String[] list_Sequence = {
+			"Sample",
+			"DNA template/(É l)",
+			"Primer/(É l)",
+			"MilliQ(É l)",
+			"Total(É l)"
 	};
 	public static final String[] list_General={
 	};
