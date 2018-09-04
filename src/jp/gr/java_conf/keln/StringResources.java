@@ -25,13 +25,13 @@ public class StringResources {
 	//Write elements of each experiment
 	//Note:you have to edit itemStateChanged() function after adding experiment.
 	public static final String[] list_PCR_Target = {
-			"Templates/(É l)",
-			"Primer1/(É l)",
-			"Primer2/(É l)",
-			"Buffer/(É l)",
-			"MilliQ/(É l)",
-			"Any Other/(É l)",
-			"Total/(É l)"
+			"Templates/(∆í√äl)",
+			"Primer name/(∆í√äl)",
+			"Primer volume/(∆í√äl)",
+			"Buffer/(∆í√äl)",
+			"MilliQ/(∆í√äl)",
+			"Polymerase/(∆í√äl)",
+			"Total/(∆í√äl)"
 	};
 	public static final String[] list_PCR_Steps = {
 			"Steps",
@@ -40,23 +40,23 @@ public class StringResources {
 			"Cycle"
 	};
 	public static final String[] list_PCR_Purification = {
-			"Sample Name/(É l)",
-			"Concentration(ng/É l)",
+			"Sample Name/(∆í√äl)",
+			"Concentration(ng/∆í√äl)",
 			"260/280", 
 			"260/230"
 	};
 	public static final String[] list_Transformation = {
 			"Sample Name",
-			"Sample Volume (É l)",
-			"Competent Cells/(É l)",
+			"Sample Volume (∆í√äl)",
+			"Competent Cells/(∆í√äl)",
 			"Medium"
 	};
 	public static final String[] list_ColonyPCR_1 = {
-			"Templates/(É l)",
-			"Primers/(É l)",
-			"MilliQ/(É l)",
-			"PreMix/(É l)",
-			"Total/(É l)"
+			"Templates/(∆í√äl)",
+			"Primers/(∆í√äl)",
+			"MilliQ/(∆í√äl)",
+			"PreMix/(∆í√äl)",
+			"Total/(∆í√äl)"
 	};
 	public static final String[] list_ColonyPCR_2 = {
 			"Name I",
@@ -68,41 +68,41 @@ public class StringResources {
 	};
 	public static final String[] list_Miniprep = {
 			"DNA",
-			"Concentration/(É g/ml)",
+			"Concentration/(∆í√äg/ml)",
 			"260/280", 
 			"260/230"
 	};
 	public static final String[] list_RestrictionEnzymeDigestion = {
 			"Sample",
-			"DNA/(É l)",
-			"EcoR1/(É l)",
-			"Xba1/(É l)",
-			"Spe1/(É l)",
-			"Pst1/(É l)",
-			"Buffer/(É l)",
-			"BSA/(É l)",
-			"MilliQ/(É l)",
-			"Total/(É l)"
+			"DNA/(∆í√äl)",
+			"EcoR1/(∆í√äl)",
+			"Xba1/(∆í√äl)",
+			"Spe1/(∆í√äl)",
+			"Pst1/(∆í√äl)",
+			"Buffer/(∆í√äl)",
+			"BSA/(∆í√äl)",
+			"MilliQ/(∆í√äl)",
+			"Total/(∆í√äl)"
 	};
 	public static final String[] list_Ligation = {
-			"Vector/(É l)",
-			"Insert/(É l)",
-			"Ligation High/(É l)",
-			"Total/(É l)"
+			"Vector/(∆í√äl)",
+			"Insert/(∆í√äl)",
+			"Ligation High/(∆í√äl)",
+			"Total/(∆í√äl)"
 	};
 	public static final String[] list_Electrophoresis = {
 			"Lane",
-			"sample/(É l)",
+			"sample/(∆í√äl)",
 			"Length(bp)"
 	};
 	public static final String[] list_GelExtraction = {
 			"Lane",
 			"Restriction Enzyme Digestion Product",
-			"Volume/(É l)"
+			"Volume/(∆í√äl)"
 	};
 	public static final String[] list_GelExtraction_Measurement = {
-			"Sample/(É l)",
-			"Concentration(É g/É l)",
+			"Sample/(∆í√äl)",
+			"Concentration(∆í√äg/∆í√äl)",
 			"260/280",
 			"260/230"
 	};
@@ -117,14 +117,14 @@ public class StringResources {
 			"Well",
 			"PlateYear",
 			"PlateNumber",
-			"MilliQ(É l)"
+			"MilliQ(∆í√äl)"
 	};
 	public static final String[] list_Sequence = {
 			"Sample",
-			"DNA template/(É l)",
-			"Primer/(É l)",
-			"MilliQ(É l)",
-			"Total(É l)"
+			"DNA template/(∆í√äl)",
+			"Primer/(∆í√äl)",
+			"MilliQ(∆í√äl)",
+			"Total(∆í√äl)"
 	};
 	public static final String[] list_General={
 	};
