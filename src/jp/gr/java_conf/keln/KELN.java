@@ -15,11 +15,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class KELN extends JPanel implements ActionListener, ItemListener, KeyListener{
-	/*
-	 * To modify this program for your team,
-	 * you have to replace each value of variables in StringResources.java.
-	 * 
-	 */
 
 	//variables
 	int Col_Max; //Maximum number of the column will be initialized in constructor.
@@ -27,6 +22,7 @@ public class KELN extends JPanel implements ActionListener, ItemListener, KeyLis
 	String platform; //OS version
 	String[] list_Current; //This array stores list_[experiment name]
 	ArrayList<String> list_Researcher = new ArrayList<String>();
+	LinkedHashMap<String, String[]> dict_exp = new LinkedHashMap<String, String[]>();
 	
 	//GUI
 	JTable table;
@@ -39,9 +35,8 @@ public class KELN extends JPanel implements ActionListener, ItemListener, KeyLis
 	JPanel panel_North, panel_Checkbox, panel_Date, panel_Text;
 	JTextField text_Month, text_Date, text_No;
 	JLabel label_Month, label_Date, label_No, label_Author;
-	JLabel label_Colmn, label_Title;
-	JTextField text_Column, text_Title;
-	JButton button_Apply;
+	JLabel label_Title;
+	JTextField text_Title;
 	JTextArea text_Memo;
 	JScrollPane scroll_Memo;
 	JLabel label_Output, label_Memo;
@@ -52,7 +47,8 @@ public class KELN extends JPanel implements ActionListener, ItemListener, KeyLis
 	public KELN(){ //Constructor
 		readJson();
 		platform = getPlatformName();
-		list_Current = StringResources.list_PCR_Target;
+		String[] list_exps = dict_exp.keySet().toArray(new String[dict_exp.keySet().size()]);
+		list_Current = dict_exp.get(list_exps[0]);
 		Col_Max = list_Current.length;
 		createTable();
 		output = new JTextArea("This is output area.\nYou can add note in right text field.");
@@ -62,7 +58,7 @@ public class KELN extends JPanel implements ActionListener, ItemListener, KeyLis
 		generate.addActionListener(this);
 		destroy = new JButton("Clear");
 		destroy.addActionListener(this);
-		selector = new JComboBox<String>(StringResources.list_Experiment);
+		selector = new JComboBox<String>(list_exps);
 		selector.addItemListener(this);
 		author = new JComboBox<String>(list_Researcher.toArray(new String[0]));
 		researcher = new JCheckBox[list_Researcher.size()];
@@ -75,19 +71,14 @@ public class KELN extends JPanel implements ActionListener, ItemListener, KeyLis
 		text_No = new JTextField();
 		text_Month.setPreferredSize(new Dimension(50, 25));
 		text_Date.setPreferredSize(new Dimension(50, 25));
-		text_Column = new JTextField();
 		text_Title = new JTextField();
-		text_Column.setPreferredSize(new Dimension(30, 25));
 		text_Title.setPreferredSize(new Dimension(100, 25));
 		text_No.setPreferredSize(new Dimension(30, 25));
 		label_Month = new JLabel("Month");
 		label_Date = new JLabel("Day");
 		label_No = new JLabel("No.");
-		label_Author = new JLabel("Author");
-		label_Colmn = new JLabel("Cols");
+		label_Author = new JLabel("Author");;
 		label_Title = new JLabel("Title");
-		button_Apply = new JButton("apply");
-		button_Apply.addActionListener(this);
 		text_Memo = new JTextArea();
 		text_Memo.setRows(10);
 		scroll_Memo = new JScrollPane(text_Memo);
@@ -116,11 +107,8 @@ public class KELN extends JPanel implements ActionListener, ItemListener, KeyLis
 		panel_Date.add(author);
 		panel_Date.add(destroy);
 		panel_Date.add(isAllowedOutput);
-		panel_Date.add(label_Colmn);
-		panel_Date.add(text_Column);
 		panel_Date.add(label_Title);
 		panel_Date.add(text_Title);
-		panel_Date.add(button_Apply);
 		panel_North.add(panel_Date, BorderLayout.NORTH);
 		panel_North.add(panel_Checkbox, BorderLayout.CENTER);
 		panel_North.add(scroll_t, BorderLayout.SOUTH);
@@ -133,29 +121,11 @@ public class KELN extends JPanel implements ActionListener, ItemListener, KeyLis
 	}
 	
 	public void createTable(){
-		if(list_Current == StringResources.list_General){
-			int columnNumber;
-			try{
-				columnNumber = Integer.parseInt(text_Column.getText());
-			}catch(NumberFormatException e){
-				columnNumber = 1;
-			}
-			
-			table = new JTable(ROW_MAX, columnNumber);
-		} else {
-			tablemodel = new DefaultTableModel(list_Current, ROW_MAX);
-			table = new JTable(tablemodel);
-		}
-		if(list_Current == StringResources.list_General){
-			try{
-				Col_Max = Integer.parseInt(text_Column.getText());
-			}catch(NumberFormatException e){
-				Col_Max = 1;
-			}
-			
-		} else {
-			Col_Max = list_Current.length;
-		}
+		tablemodel = new DefaultTableModel(list_Current, ROW_MAX);
+		table = new JTable(tablemodel);
+		
+		Col_Max = list_Current.length;
+		
 		table.addKeyListener(this);
 		table.setColumnSelectionAllowed(true); //User is allowed to select a single cell
 		table.setGridColor(Color.decode("#4682B4"));
@@ -163,15 +133,7 @@ public class KELN extends JPanel implements ActionListener, ItemListener, KeyLis
 		colmodel = (DefaultTableColumnModel)table.getColumnModel();
 		scroll_t = new JScrollPane(table);
 		scroll_t.setPreferredSize(table.getPreferredSize());
-		if(list_Current != StringResources.list_General){
-			TableColumn col;
-			for(int i=0; i< Col_Max; i++){
-				col = colmodel.getColumn(i);
-				col.setHeaderValue(list_Current[i]);
-			}
-		} else {
-			tablemodel = (DefaultTableModel) table.getModel();
-		}
+		tablemodel = (DefaultTableModel) table.getModel();
 		
 	}
 	
@@ -185,126 +147,6 @@ public class KELN extends JPanel implements ActionListener, ItemListener, KeyLis
 	public void resetCheckbox(){
 		for(int i=0; i<list_Researcher.size(); i++){
 			researcher[i].setSelected(false);
-		}
-	}
-	
-	public void convertStringToHTML(){ //Convert JTable into HTML format
-		TableColumn col;
-		String out = "";
-		
-		//Author
-		out += "<!-- Table Generated by KELN" + " ";
-		out += "Author: " + author.getSelectedItem().toString();
-		out += " -->\r\n<div class=\"keln_container\">\r\n";
-		//Date
-		out += "<a name=\"";
-		if(Integer.parseInt(text_Month.getText().toString()) <= 9){
-			out += "0";
-		}
-		out += text_Month.getText().toString();
-		try{
-			if(Integer.parseInt(text_Date.getText().toString()) <= 9){
-				out += "0";
-			}
-		}catch(NumberFormatException e){
-			JOptionPane.showMessageDialog(this, "Date is invalid or empty.");
-			return;
-		}
-		out += text_Date.getText().toString();
-		out += "\" class = \"kyoto-jump\"></a>\r\n";
-		out += "<span class=\"keln_date\"><h3>";
-		out += text_Month.getText().toString() + "/" + text_Date.getText().toString();
-		out += "</h3></span>\r\n";
-		
-		//Experiment name
-		out += "<span class=\"keln_exp\"><h4>";
-		if(list_Current == StringResources.list_General){
-			if(text_Title.getText().equals("")){
-				JOptionPane.showMessageDialog(this, "Please set a title for this table.");
-				return;
-			}else{
-				out += text_Title.getText();
-			}
-			
-		} else {
-			out += selector.getSelectedItem().toString();
-		}
-		
-		out += "</h4></span>\r\n";
-		
-		//Experimenter name
-		out += "<span class=\"keln_researcher\">";
-		
-		int finalindex = 0; //final experimenter
-		for(int i=0; i<list_Researcher.size(); i++){
-			if(researcher[i].isSelected() == true){
-				finalindex = i;
-			}
-		}
-		for(int i=0; i<list_Researcher.size(); i++){
-			if(researcher[i].isSelected() == true){
-				out += researcher[i].getText();
-				if(i != finalindex){
-					out += ", "; //Do not add comma after the last name
-				}
-			}
-		}
-		out += "</span>\r\n";
-		
-		//Table start
-		out += "<table class=\"keln_table\">\r\n";
-		out += "<tr>";
-		
-		//Add header
-		for(int i=0; i<Col_Max; i++){
-			out += "<th>";
-			if(list_Current == StringResources.list_General){
-				out += tablemodel.getValueAt(0, i);
-			} else {
-				col = colmodel.getColumn(i);
-				out += col.getHeaderValue();
-			} 
-			
-			out += "</th>";
-		}
-		out += "</tr>\r\n";
-		
-		//Fill the table with data
-		for(int i=0; i<ROW_MAX; i++){
-			if((list_Current == StringResources.list_General) && i == 0){
-				continue;
-			}
-			//Stop after detecting an empty row
-			int emptyCount = 0;
-			for(int j=0; j<table.getColumnCount(); j++){
-				if(tablemodel.getValueAt(i, j) == null || tablemodel.getValueAt(i, j).equals("")) emptyCount++ ;
-			}
-			if(emptyCount >= table.getColumnCount()) break;
-			
-			out += "<tr>";
-			for(int j=0; j<table.getColumnCount(); j++){
-				out += "<td>";
-				try{
-					out += tablemodel.getValueAt(i, j).toString();
-				}catch(NullPointerException e){
-					out += "";
-				}
-				out += "</td>";
-			}
-			out += "</tr>\r\n";
-		}
-		
-		out += "</table>\r\n</div>\r\n";
-		if(!text_Memo.getText().equals("")){
-			String memo = text_Memo.getText();
-			memo = replaceString(memo, "\n", "<br>");
-			out += "<p class=\"keln_note\">" + memo + "</p>" + "\n";
-		}
-		out += "<!------------ Table END ------------>";
-		out = replaceString(out, "μ", "&micro");
-		output.setText(out);
-		if(isAllowedOutput.isSelected()){
-			saveStringToText(out);
 		}
 	}
 	
@@ -371,18 +213,103 @@ public class KELN extends JPanel implements ActionListener, ItemListener, KeyLis
 		try {
 			root = mapper.readTree(new File("settings.txt"));
 		} catch (JsonProcessingException e) {
-			JOptionPane.showMessageDialog(this, "Syntax Error");
+			JOptionPane.showMessageDialog(this, "There are syntax errors in settings.txt");
+			e.printStackTrace();
 			System.exit(0);
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(this, "Please create settings.txt in the same directory as KELN.jar");
 			System.exit(0);
 		}
-		for(JsonNode n: root.get("member")){
-			list_Researcher.add(n.asText());
+		try {
+			for(JsonNode n: root.get("member")){
+				list_Researcher.add(n.asText());
+			}
+			for(JsonNode exp: root.get("experiments")){
+				String name = exp.get("name").asText();
+				ArrayList<String> cols = new ArrayList<String>();
+				for (JsonNode jsonNode : exp.get("columns")) {
+					cols.add(jsonNode.asText());
+				}
+				String [] cols_array = cols.toArray(new String[cols.size()]);
+				dict_exp.put(name, cols_array);
+			}
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(this, "There are missing values or wrong keys in settings.txt");
+			e.printStackTrace();
+			System.exit(0);
 		}
 		
 		
 	}
+	
+	private ArrayList<String> getNameList(ArrayList<String> namelist, JCheckBox[] checkbox) {
+		ArrayList<String> list = new ArrayList<String>();
+		for(int i=0; i<namelist.size(); i++){
+			if(checkbox[i].isSelected() == true){
+				list.add(researcher[i].getText());
+			}
+		}
+		return list;
+	}
+	
+	private ArrayList<String> getHeader(){
+		ArrayList<String> list = new ArrayList<String>();
+		TableColumn col;
+		for(int i=0; i<Col_Max; i++){
+			col = colmodel.getColumn(i);
+			list.add((String) col.getHeaderValue());
+		}
+		return list;
+	}
+	
+	private ArrayList<ArrayList<String>> getTableValue(){
+		ArrayList<ArrayList<String>> list = new ArrayList<ArrayList<String>>();
+		String data;
+		
+		for(int i=0; i<ROW_MAX; i++){
+			//Stop after detecting an empty row
+			int emptyCount = 0;
+			for(int j=0; j<table.getColumnCount(); j++){
+				if(tablemodel.getValueAt(i, j) == null || tablemodel.getValueAt(i, j).equals("")) emptyCount++ ;
+			}
+			if(emptyCount >= table.getColumnCount()) break;
+			
+			ArrayList<String> row = new ArrayList<String>();
+			for(int j=0; j<table.getColumnCount(); j++){
+				try{
+					data = tablemodel.getValueAt(i, j).toString();
+				}catch(NullPointerException e){
+					data = "";
+				}
+				row.add(data);
+			}
+			list.add(row);
+		}
+		return list;
+	}
+	
+	private void Convert() {
+		String currentAuthor = author.getSelectedItem().toString();
+		String month = text_Month.getText().toString();
+		String date = text_Date.getText().toString();
+		String title;
+		if(text_Title.getText().equals("")){
+			title = selector.getSelectedItem().toString();
+		} else {
+			title = text_Title.getText();
+		}
+		ArrayList<String> namelist = getNameList(list_Researcher, researcher);
+		ArrayList<String> header = getHeader();
+		String memo = text_Memo.getText();
+		ArrayList<ArrayList<String>> table = getTableValue();
+		DataProcessor dp = new DataProcessor(this);
+		String str = dp.getHTML(currentAuthor, month, date, title, namelist, header, memo, table);
+		output.setText(str);
+		if(isAllowedOutput.isSelected()){
+			saveStringToText(str);
+		}
+	}
+	
 	
 	public static void main(String[] args){
 		KELN keln = new KELN();
@@ -398,7 +325,7 @@ public class KELN extends JPanel implements ActionListener, ItemListener, KeyLis
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == generate){
 			if(validateInputForm()){
-				convertStringToHTML();
+				Convert();
 			}
 		}
 		if(e.getSource() == destroy){
@@ -406,70 +333,13 @@ public class KELN extends JPanel implements ActionListener, ItemListener, KeyLis
 			resetCheckbox();
 			output.setText("");
 		}
-		if(e.getSource() == button_Apply){
-			selector.setSelectedItem("General");
-			list_Current = StringResources.list_General;
-			resetTable();
-		}
 	}
 
 	@Override
 	public void itemStateChanged(ItemEvent e) {
 		if(e.getSource() == selector && e.getStateChange() == ItemEvent.SELECTED){
-			switch (selector.getSelectedItem().toString()) {
-			case "PCR (Target)":
-				list_Current = StringResources.list_PCR_Target;
-				break;
-			case "PCR (Steps)":
-				list_Current = StringResources.list_PCR_Steps;
-				break;
-			case "PCR (Purification)":
-				list_Current = StringResources.list_PCR_Purification;
-				break;
-			case "Transformation":
-				list_Current = StringResources.list_Transformation;
-				break;
-			case "Colony PCR (typeA)":
-				list_Current = StringResources.list_ColonyPCR_1;
-				break;
-			case "Colony PCR (typeB)":
-				list_Current = StringResources.list_ColonyPCR_2;
-				break;
-			case "Liquid Culture":
-				list_Current = StringResources.list_LiquidCulture;
-				break;
-			case "Miniprep":
-				list_Current = StringResources.list_Miniprep;
-				break;
-			case "Restriction Enzyme Digestion":
-				list_Current = StringResources.list_RestrictionEnzymeDigestion;
-				break;
-			case "Ligation":
-				list_Current = StringResources.list_Ligation;
-				break;
-			case "Electrophoresis":
-				list_Current = StringResources.list_Electrophoresis;
-				break;
-			case "Gel Extraction":
-				list_Current = StringResources.list_GelExtraction;
-				break;
-			case "Gel Extraction(Measurement)":
-				list_Current = StringResources.list_GelExtraction_Measurement;
-				break;
-			case "Preparation":
-				list_Current = StringResources.list_Preparation;
-				break;
-			case "PartsAwaking":
-				list_Current = StringResources.list_PartsAwaking;
-				break;
-			case "Sequence":
-				list_Current = StringResources.list_Sequence;
-				break;
-			case "General":
-				list_Current = StringResources.list_General;
-			default:
-				break;
-			}
+			String currentExpName = selector.getSelectedItem().toString();
+			list_Current = dict_exp.get(currentExpName);
 			resetTable();
 		}
 	}

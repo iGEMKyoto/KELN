@@ -3,12 +3,146 @@
       "Tong",
       "Nakazato",
       "Fukuda",
-			"Nambu",
-			"Tsuzuki",
-			"Shimazoe",
-			"Sato",
-			"Tamukai",
-     
-	]
+      "Nambu",
+      "Tsuzuki",
+      "Shimazoe",
+      "Sato",
+      "Tamukai"
+	],
+	
+	"experiments":[
+		{"name": "PCR (Target)",
+		"columns":[
+			"Templates/(μl)",
+			"Primer name/(μl)",
+			"Primer volume/(μl)",
+			"Buffer/(μl)",
+			"MilliQ/(μl)",
+			"Polymerase/(μl)",
+			"Total/(μl)"
+		]},
 
+		{"name": "PCR (Steps)",
+		"columns":[
+			"Steps",
+			"Temparature",
+			"Time",
+			"Cycle"
+		]},
+
+		{"name": "PCR (Purification)",
+		"columns":[
+			"Sample Name/(μl)",
+			"Concentration(ng/μl)",
+			"260/280", 
+			"260/230"
+		]},
+
+		{"name": "Transformation",
+		"columns":[
+			"Sample Name",
+			"Sample Volume (μl)",
+			"Competent Cells/(μl)",
+			"Medium"
+		]},
+
+		{"name":"Colony PCR (typeA)" ,
+		"columns":[
+			"Templates/(μl)",
+			"Primers/(μl)",
+			"MilliQ/(μl)",
+			"PreMix/(μl)",
+			"Total/(μl)"
+		]},
+
+		{"name": "Colony PCR (typeB)",
+		"columns":[
+			"Name I",
+			"Name II"
+		]},
+
+		{"name": "Liquid Culture",
+		"columns":[
+			"Name",
+			"medium"
+		]},
+
+		{"name": "Miniprep",
+		"columns":[
+			"DNA",
+			"Concentration/(μg/ml)",
+			"260/280", 
+			"260/230"
+		]},
+
+		{"name": "Restriction Enzyme Digestion",
+		"columns":[
+			"Sample",
+			"DNA/(μl)",
+			"EcoR1/(μl)",
+			"Xba1/(μl)",
+			"Spe1/(μl)",
+			"Pst1/(μl)",
+			"Buffer/(μl)",
+			"BSA/(μl)",
+			"MilliQ/(μl)",
+			"Total/(μl)"
+		]},
+
+		{"name": "Ligation",
+		"columns":[
+			"Vector/(μl)",
+			"Insert/(μl)",
+			"Ligation High/(μl)",
+			"Total/(μl)"
+		]},
+
+		{"name": "Electrophoresis",
+		"columns":[
+			"Lane",
+			"sample/(μl)",
+			"Length(bp)"
+		]},
+
+		{"name": "Gel Extraction",
+		"columns":[
+			"Lane",
+			"Restriction Enzyme Digestion Product",
+			"Volume/(μl)"
+		]},
+
+		{"name": "Gel Extraction(Measurement)",
+		"columns":[
+			"Sample/(μl)",
+			"Concentration(μg/μl)",
+			"260/280",
+			"260/230"
+		]},
+	
+		{"name": "Preparation",
+		"columns":[
+			"Reagent",
+			"Liquid"
+		]},
+			
+		{"name": "PartsAwaking",
+		"columns":[
+			"Description",
+			"PartName",
+			"Backbone",
+			"Well",
+			"PlateYear",
+			"PlateNumber",
+			"MilliQ(μl)"
+		]},
+
+		{"name": "Sequence",
+		"columns":[
+			"Sample",
+			"DNA template/(μl)",
+			"Primer/(μl)",
+			"MilliQ(μl)",
+			"Total(μl)"
+		]}
+	]
 }
