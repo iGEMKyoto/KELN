@@ -3,6 +3,11 @@ KELN (Kyoto-team Electronic Lab Note) is an useful app to create wiki for your i
 
 You can make html-formatted files with graphical user interface.
 
+## Requirements
+Java 8 (JRE 1.8) or later
+
+Works on both Windows and Ma
+
 ## For users
 ![main](https://raw.githubusercontent.com/iGEMKyoto/KELN/master/wiki/main.PNG)
 
